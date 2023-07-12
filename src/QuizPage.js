@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
 function QuizPage() {
@@ -74,13 +75,23 @@ function QuizPage() {
   // State to keep track of current question index and user answers
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [btnColors, setBtnColors] = useState(
+    Object.fromEntries(quizData.map((e, idx) => [idx, "danger"]))
+  );
+  const [resultData, setResultData] = useState({});
+  const navigate = useNavigate();
 
   // Function to handle selecting an answer
-  const handleAnswerSelect = (selectedAnswer) => {
+  const handleAnswerSelect = (selectedAnswer, index) => {
     setUserAnswers((prevAnswers) => {
       const updatedAnswers = [...prevAnswers];
       updatedAnswers[currentQuestion] = selectedAnswer;
       return updatedAnswers;
+    });
+    setBtnColors((prev) => {
+      const updatedColors = { ...prev };
+      updatedColors[index] = "success";
+      return updatedColors;
     });
   };
 
@@ -131,7 +142,7 @@ function QuizPage() {
                   name="answer"
                   value={option}
                   checked={userAnswers[currentQuestion] === option}
-                  onChange={() => handleAnswerSelect(option)}
+                  onChange={() => handleAnswerSelect(option, currentQuestion)}
                 />
                 {option}
               </label>
@@ -160,7 +171,10 @@ function QuizPage() {
         <div>
           {quizData.map((question, index) => {
             return (
-              <button onClick={() => goToSpecificQuestion(index)}>
+              <button
+                className={`btn btn-${btnColors[index]}`}
+                onClick={() => goToSpecificQuestion(index)}
+              >
                 {index + 1}
               </button>
             );
@@ -173,21 +187,20 @@ function QuizPage() {
   // Function to handle quiz submission
   const handleSubmit = () => {
     const score = calculateScore();
-    alert(`Your score: ${score}/${quizData.length}`);
+    setResultData({ score: score, overall: quizData.length });
+    navigate("/result", { state: { score: score, overall: quizData.length } });
+    // alert(`Your score: ${score}/${quizData.length}`);
     // You can perform other actions with the score, like storing it in a database
   };
   useEffect(() => {
+    console.log("use effect");
     const handleKeyDown = (event) => {
       if (event.keyCode === 37) {
         // Left arrow key
-        if (currentQuestion > 0) {
-          goToPreviousQuestion();
-        }
+        goToPreviousQuestion();
       } else if (event.keyCode === 39) {
         // Right arrow key
-        if (currentQuestion < quizData.length - 1) {
-          goToNextQuestion();
-        }
+        goToNextQuestion();
       }
     };
 
