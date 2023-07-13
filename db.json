@@ -1,0 +1,69 @@
+{
+  "questions": [
+    {
+      "question": "What is the capital of France?",
+      "options": ["Paris", "London", "Berlin", "Madrid"],
+      "answer": "Paris"
+    },
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+      "answer": "Mars"
+    },
+    {
+      "question": "What is the largest ocean in the world?",
+      "options": [
+        "Atlantic Ocean",
+        "Arctic Ocean",
+        "Indian Ocean",
+        "Pacific Ocean"
+      ],
+      "answer": "Pacific Ocean"
+    },
+    {
+      "question": "Who painted the Mona Lisa?",
+      "options": [
+        "Leonardo da Vinci",
+        "Pablo Picasso",
+        "Vincent van Gogh",
+        "Michelangelo"
+      ],
+      "answer": "Leonardo da Vinci"
+    },
+    {
+      "question": "What is the chemical symbol for gold?",
+      "options": ["Au", "Ag", "Fe", "Cu"],
+      "answer": "Au"
+    },
+    {
+      "question": "What is the tallest mountain in the world?",
+      "options": ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
+      "answer": "Mount Everest"
+    },
+    {
+      "question": "Which country is known as the Land of the Rising Sun?",
+      "options": ["China", "Japan", "South Korea", "Thailand"],
+      "answer": "Japan"
+    },
+    {
+      "question": "Which year was the first successful manned moon landing?",
+      "options": ["1969", "1972", "1961", "1975"],
+      "answer": "1969"
+    },
+    {
+      "question": "Who wrote the play 'Romeo and Juliet'?",
+      "options": [
+        "William Shakespeare",
+        "Jane Austen",
+        "Charles Dickens",
+        "Emily Bronte"
+      ],
+      "answer": "William Shakespeare"
+    },
+    {
+      "question": "What is the largest mammal on Earth?",
+      "options": ["Elephant", "Blue whale", "Giraffe", "Hippopotamus"],
+      "answer": "Blue whale"
+    }
+  ]
+}

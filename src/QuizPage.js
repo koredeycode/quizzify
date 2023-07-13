@@ -3,81 +3,38 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 
 function QuizPage() {
-  // Sample quiz data
-  const quizData = [
-    {
-      question: "What is the capital of France?",
-      options: ["Paris", "London", "Berlin", "Madrid"],
-      answer: "Paris",
-    },
-    {
-      question: "Which planet is known as the Red Planet?",
-      options: ["Venus", "Mars", "Jupiter", "Saturn"],
-      answer: "Mars",
-    },
-    {
-      question: "What is the largest ocean in the world?",
-      options: [
-        "Atlantic Ocean",
-        "Arctic Ocean",
-        "Indian Ocean",
-        "Pacific Ocean",
-      ],
-      answer: "Pacific Ocean",
-    },
-    {
-      question: "Who painted the Mona Lisa?",
-      options: [
-        "Leonardo da Vinci",
-        "Pablo Picasso",
-        "Vincent van Gogh",
-        "Michelangelo",
-      ],
-      answer: "Leonardo da Vinci",
-    },
-    {
-      question: "What is the chemical symbol for gold?",
-      options: ["Au", "Ag", "Fe", "Cu"],
-      answer: "Au",
-    },
-    {
-      question: "What is the tallest mountain in the world?",
-      options: ["Mount Everest", "K2", "Kangchenjunga", "Makalu"],
-      answer: "Mount Everest",
-    },
-    {
-      question: "Which country is known as the Land of the Rising Sun?",
-      options: ["China", "Japan", "South Korea", "Thailand"],
-      answer: "Japan",
-    },
-    {
-      question: "Which year was the first successful manned moon landing?",
-      options: ["1969", "1972", "1961", "1975"],
-      answer: "1969",
-    },
-    {
-      question: "Who wrote the play 'Romeo and Juliet'?",
-      options: [
-        "William Shakespeare",
-        "Jane Austen",
-        "Charles Dickens",
-        "Emily Bronte",
-      ],
-      answer: "William Shakespeare",
-    },
-    {
-      question: "What is the largest mammal on Earth?",
-      options: ["Elephant", "Blue whale", "Giraffe", "Hippopotamus"],
-      answer: "Blue whale",
-    },
-  ];
+  const [quizData, setQuizData] = useState([]);
+  const [btnColors, setBtnColors] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
+
+  useEffect(() => {
+    const fetchQuizData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/questions?_limit=2"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch quiz data");
+        }
+        const data = await response.json();
+        setQuizData(data);
+        setIsLoading(false);
+        setBtnColors(Object.fromEntries(data.map((e, idx) => [idx, "danger"])));
+      } catch (error) {
+        console.error("Error fetching quiz data:", error);
+        setFetchError(error.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchQuizData();
+  }, []);
 
   // State to keep track of current question index and user answers
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
-  const [btnColors, setBtnColors] = useState(
-    Object.fromEntries(quizData.map((e, idx) => [idx, "danger"]))
-  );
+
   const [resultData, setResultData] = useState({});
   const navigate = useNavigate();
 
@@ -127,6 +84,24 @@ function QuizPage() {
 
   // Render quiz question and options
   const renderQuestion = () => {
+    if (isLoading) {
+      return (
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (fetchError) {
+      return (
+        <div className="alert alert-danger" role="alert">
+          Failed to fetch quiz data. Please try again later.
+        </div>
+      );
+    }
+
     const question = quizData[currentQuestion];
 
     return (
@@ -193,7 +168,6 @@ function QuizPage() {
     // You can perform other actions with the score, like storing it in a database
   };
   useEffect(() => {
-    console.log("use effect");
     const handleKeyDown = (event) => {
       if (event.keyCode === 37) {
         // Left arrow key
