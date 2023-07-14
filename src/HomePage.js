@@ -71,10 +71,8 @@ function HomePage() {
       <Navbar />
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Choose Options</h5>
-          <h2>Welcome to the Quiz App!</h2>
+          \<h2 class="card-title">Welcome to the Quiz App!</h2>
           <p>Test your knowledge with our challenging quizzes.</p>
-
           <div class="row g-3">
             <div class="col-md-3">
               <label for="number" class="form-label">
