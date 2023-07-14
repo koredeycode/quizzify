@@ -2,20 +2,13 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav>
+    <div className="card-header d-flex align-items-center justify-items-center justify-content-between">
       <div>
-        {/* Your logo */}
-        <h1>Quiz App</h1>
+        <Link to="/" className="text-decoration-none">
+          <h5 className="d-lg-block">Quizzify</h5>
+        </Link>
       </div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/quiz">Start Quiz</Link>
-        </li>
-      </ul>
-    </nav>
+    </div>
   );
 }
 export default Navbar;

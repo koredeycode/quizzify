@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
 function QuizPage() {
@@ -7,20 +7,43 @@ function QuizPage() {
   const [btnColors, setBtnColors] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
-
+  const location = useLocation();
+  const { amount, type, difficulty, category } = location.state || {};
+  const typeTxt = type ? `&type=${type}` : "";
+  const categoryTxt = category ? `&category=${category}` : "";
+  const difficultyTxt = difficulty ? `&difficulty=${difficulty}` : "";
   useEffect(() => {
+    console.log("separate useeffect");
+  }, []);
+  useEffect(() => {
+    console.log("useeffect");
     const fetchQuizData = async () => {
+      // const url = `https://opentdb.com/api.php?amount=${amount ? amount : 10}${categoryTxt}${typeTxt}${difficultyTxt}&encode=base64`;
+      const url = `http://localhost:3000/data`;
       try {
-        const response = await fetch(
-          "http://localhost:3000/questions?_limit=2"
-        );
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch quiz data");
         }
         const data = await response.json();
-        setQuizData(data);
+        const realData = data.results.map((q) => {
+          const retObj = {
+            question: q.question,
+            options: [...q.incorrect_answers, q.correct_answer].sort(
+              (a, b) => Math.random() - 0.5
+            ),
+            answer: q.correct_answer,
+          };
+          return retObj;
+        });
+        if (realData.length < 1) {
+          throw new Error("No questions found");
+        }
+        setQuizData(realData);
         setIsLoading(false);
-        setBtnColors(Object.fromEntries(data.map((e, idx) => [idx, "danger"])));
+        setBtnColors(
+          Object.fromEntries(realData.map((e, idx) => [idx, "outline-success"]))
+        );
       } catch (error) {
         console.error("Error fetching quiz data:", error);
         setFetchError(error.message);
@@ -34,8 +57,6 @@ function QuizPage() {
   // State to keep track of current question index and user answers
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
-
-  const [resultData, setResultData] = useState({});
   const navigate = useNavigate();
 
   // Function to handle selecting an answer
@@ -50,6 +71,7 @@ function QuizPage() {
       updatedColors[index] = "success";
       return updatedColors;
     });
+    setTimeout(goToNextQuestion, 500);
   };
 
   const goToPreviousQuestion = () => {
@@ -73,13 +95,22 @@ function QuizPage() {
 
   // Function to calculate the score based on user answers
   const calculateScore = () => {
+    const resultObj = {
+      data: [],
+    };
     let score = 0;
     quizData.forEach((question, index) => {
-      if (userAnswers[index] === question.answer) {
+      let gotten = false;
+      const chosen_answer = userAnswers[index];
+      if (chosen_answer === question.answer) {
+        gotten = true;
         score++;
       }
+      resultObj.data.push({ ...question, gotten, chosen_answer });
     });
-    return score;
+    resultObj["score"] = score;
+    resultObj["overall"] = quizData.length;
+    return resultObj;
   };
 
   // Render quiz question and options
@@ -96,8 +127,11 @@ function QuizPage() {
 
     if (fetchError) {
       return (
-        <div className="alert alert-danger" role="alert">
-          Failed to fetch quiz data. Please try again later.
+        <div>
+          <div className="alert alert-danger" role="alert">
+            Failed to fetch quiz data. Please try again later.
+          </div>
+          <Link to="/">Go home</Link>
         </div>
       );
     }
@@ -106,24 +140,34 @@ function QuizPage() {
 
     return (
       <div>
-        <h2>Question {currentQuestion + 1}</h2>
-        <p>{question.question}</p>
-        <ul>
-          {question.options.map((option, index) => (
-            <li key={index}>
-              <label>
-                <input
-                  type="radio"
-                  name="answer"
-                  value={option}
-                  checked={userAnswers[currentQuestion] === option}
-                  onChange={() => handleAnswerSelect(option, currentQuestion)}
-                />
-                {option}
-              </label>
-            </li>
-          ))}
-        </ul>
+        <div class="card">
+          <div class="card-header">
+            <h2>Question {currentQuestion + 1}</h2>
+            <p>{atob(question.question)}</p>
+          </div>
+          <div class="card-body">
+            <ul className="list-group">
+              {question.options.map((option, index) => (
+                <li key={index} className="list-group-item">
+                  <label>
+                    <input
+                      className="form-check-input me-1"
+                      type="radio"
+                      name="answer"
+                      value={atob(option)}
+                      checked={userAnswers[currentQuestion] === option}
+                      onClick={() =>
+                        handleAnswerSelect(option, currentQuestion)
+                      }
+                    />
+                    {atob(option)}
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="card-footer">{renderNavigationButtons()}</div>
+        </div>
       </div>
     );
   };
@@ -131,42 +175,58 @@ function QuizPage() {
   // Render previous and next buttons based on current question index
   const renderNavigationButtons = () => {
     return (
-      <>
-        <div>
+      <div className="container">
+        <div className="row">
           {currentQuestion > 0 && (
-            <button onClick={goToPreviousQuestion}>Previous</button>
+            <div className="col-3">
+              <button
+                className="btn btn-secondary"
+                onClick={goToPreviousQuestion}
+              >
+                <i class="bi bi-star me-1"></i>Previous
+              </button>
+            </div>
           )}
           {currentQuestion < quizData.length - 1 && (
-            <button onClick={goToNextQuestion}>Next</button>
+            <div className="col-3">
+              <button className="btn btn-secondary" onClick={goToNextQuestion}>
+                <i class="bi bi-star me-1"></i>Next
+              </button>
+            </div>
           )}
           {currentQuestion === quizData.length - 1 && (
-            <button onClick={handleSubmit}>Submit</button>
+            <div className="col-3">
+              <button className="btn btn-warning" onClick={handleSubmit}>
+                <i class="bi bi-star me-1"></i>Submit
+              </button>
+            </div>
           )}
         </div>
-        <div>
+        <div class="row" role="group" aria-label="Basic outlined example">
           {quizData.map((question, index) => {
             return (
-              <button
-                className={`btn btn-${btnColors[index]}`}
-                onClick={() => goToSpecificQuestion(index)}
-              >
-                {index + 1}
-              </button>
+              <div className="col-2">
+                <button
+                  className={`btn btn-${btnColors[index]}`}
+                  onClick={() => goToSpecificQuestion(index)}
+                >
+                  {index + 1}
+                </button>
+              </div>
             );
           })}
         </div>
-      </>
+      </div>
     );
   };
 
   // Function to handle quiz submission
   const handleSubmit = () => {
-    const score = calculateScore();
-    setResultData({ score: score, overall: quizData.length });
-    navigate("/result", { state: { score: score, overall: quizData.length } });
-    // alert(`Your score: ${score}/${quizData.length}`);
+    const scoreData = calculateScore();
+    navigate("/result", { state: scoreData });
     // You can perform other actions with the score, like storing it in a database
   };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.keyCode === 37) {
@@ -184,11 +244,11 @@ function QuizPage() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
   return (
     <div>
       <Navbar />
       {renderQuestion()}
-      {renderNavigationButtons()}
     </div>
   );
 }

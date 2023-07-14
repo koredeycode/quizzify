@@ -1,16 +1,21 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
 function ResultPage() {
   const location = useLocation();
-  console.log(location);
-  const { score, overall } = location.state;
+  const { score, overall, data } = location.state || {};
   return (
     <div>
       <Navbar />
-      <p>
-        You scored {score} over {overall}
-      </p>
+      {location.state ? (
+        <p>
+          You scored {score} over {overall}
+        </p>
+      ) : (
+        <p>
+          No result Data found Go <Link to="/">Home</Link>
+        </p>
+      )}
     </div>
   );
 }
