@@ -148,19 +148,22 @@ function QuizPage() {
             <p>{atob(question.question)}</p>
           </div>
           <div class="card-body">
-            <ul className="list-group">
+            <ul className="list-group list-unstyled">
               {question.options.map((option, index) => (
-                <li key={index} className="list-group-item">
+                <li
+                  key={index}
+                  className={`list-group-item${
+                    userAnswers[currentQuestion] === option ? " bg-primary" : ""
+                  }`}
+                  onClick={() => handleAnswerSelect(option, currentQuestion)}
+                >
                   <label>
                     <input
                       className="form-check-input me-1"
                       type="radio"
                       name="answer"
                       value={atob(option)}
-                      checked={userAnswers[currentQuestion] === option}
-                      onClick={() =>
-                        handleAnswerSelect(option, currentQuestion)
-                      }
+                      disabled
                     />
                     {atob(option)}
                   </label>
@@ -185,21 +188,21 @@ function QuizPage() {
                 className="btn btn-secondary"
                 onClick={goToPreviousQuestion}
               >
-                <i class="bi bi-star me-1"></i>Previous
+                <i class="bi bi-caret-left-fill me-1"></i>Previous
               </button>
             </div>
           )}
           {currentQuestion < quizData.length - 1 && (
             <div className="col-3">
               <button className="btn btn-secondary" onClick={goToNextQuestion}>
-                <i class="bi bi-star me-1"></i>Next
+                Next<i class="bi bi-caret-right-fill me-1"></i>
               </button>
             </div>
           )}
           {currentQuestion === quizData.length - 1 && (
             <div className="col-3">
               <button className="btn btn-warning" onClick={handleSubmit}>
-                <i class="bi bi-star me-1"></i>Submit
+                <i class="bi bi-check-circle-fill me-1"></i>Submit
               </button>
             </div>
           )}

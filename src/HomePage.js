@@ -1,5 +1,5 @@
 //import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "./Navbar";
 
@@ -67,11 +67,10 @@ function HomePage() {
 
   return (
     <div>
-      {" "}
       <Navbar />
       <div class="card">
         <div class="card-body">
-          \<h2 class="card-title">Welcome to the Quiz App!</h2>
+          <h2 class="card-title">Welcome to the Quiz App!</h2>
           <p>Test your knowledge with our challenging quizzes.</p>
           <div class="row g-3">
             <div class="col-md-3">
