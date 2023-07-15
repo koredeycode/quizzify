@@ -2,14 +2,17 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <div className="card-header d-flex align-items-center justify-items-center justify-content-between">
-      <div>
-        <i className="bi bi-patch-question"></i>
-        <Link to="/" className="text-decoration-none">
-          <h5 className="d-lg-block">Quizzaroo</h5>
+    <nav
+      class="navbar navbar-expand-lg bg-body-tertiary rounded"
+      aria-label="Eleventh navbar example"
+    >
+      <div class="container-fluid justify-content-center" bis_skin_checked="1">
+        {/* <i className="bi bi-patch-question me-2"></i> */}
+        <Link to="/" className="navbar-brand text-decoration-none">
+          <h2 className="d-lg-block m-0">Quizzaroo</h2>
         </Link>
       </div>
-    </div>
+    </nav>
   );
 }
 export default Navbar;

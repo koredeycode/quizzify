@@ -66,93 +66,96 @@ function HomePage() {
   };
 
   return (
-    <div>
+    <>
       <Navbar />
-      <div class="card">
-        <div class="card-body">
-          <h2 class="card-title">Welcome to the Quiz App!</h2>
-          <p>Test your knowledge with our challenging quizzes.</p>
-          <div class="row g-3">
-            <div class="col-md-3">
-              <label for="number" class="form-label">
-                Number of questions
-              </label>
-              <input
-                className="form-control"
-                id="number"
-                type="number"
-                name="amount"
-                value={filter.amount}
-                onChange={handleFilterChange}
-              />
-            </div>
-            <div class="col-md-3">
-              <label for="category" class="form-label">
-                Category
-              </label>
-              <select
-                id="category"
-                name="category"
-                value={filter.category}
-                onChange={handleFilterChange}
-                className="form-select text-capitalize"
-              >
-                <option value="">Any Category</option>
-                {categories.map((category) => (
-                  <option key={category} value={category.value}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="difficulty" class="form-label">
-                Difficulty
-              </label>
-              <select
-                name="difficulty"
-                id="difficulty"
-                value={filter.difficulty}
-                onChange={handleFilterChange}
-                className="form-select text-capitalize"
-              >
-                <option value="">Any Difficulty</option>
-                {difficulties.map((difficulty) => (
-                  <option key={difficulty} value={difficulty}>
-                    {difficulty}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label for="type" class="form-label">
-                Type
-              </label>
-              <select
-                id="type"
-                name="type"
-                value={filter.type}
-                onChange={handleFilterChange}
-                className="form-select text-capitalize"
-              >
-                <option value="">Any Type</option>
-                {types.map((type) => (
-                  <option key={type} value={type}>
-                    {type === "boolean" ? "True/False" : "Multiple Choice"}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div class="text-center">
-              <button onClick={handleSubmit} className="btn btn-primary">
-                Start Quiz
-              </button>
+      <div class="container">
+        <div class="">
+          <div class="text-center">
+            <h2 class="card-title m-3">Welcome to the Quiz App!</h2>
+            <p>Test your knowledge with challenging quizzes.</p>
+          </div>
+          <div className="mx-auto">
+            <div class="row g-3">
+              <div class="col-md-3">
+                <label for="number" class="form-label">
+                  Questions
+                </label>
+                <input
+                  className="form-control"
+                  id="number"
+                  type="number"
+                  name="amount"
+                  value={filter.amount}
+                  onChange={handleFilterChange}
+                />
+              </div>
+              <div class="col-md-3">
+                <label for="category" class="form-label">
+                  Category
+                </label>
+                <select
+                  id="category"
+                  name="category"
+                  value={filter.category}
+                  onChange={handleFilterChange}
+                  className="form-select text-capitalize"
+                >
+                  <option value="">Any Category</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category.value}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label for="difficulty" class="form-label">
+                  Difficulty
+                </label>
+                <select
+                  name="difficulty"
+                  id="difficulty"
+                  value={filter.difficulty}
+                  onChange={handleFilterChange}
+                  className="form-select text-capitalize"
+                >
+                  <option value="">Any Difficulty</option>
+                  {difficulties.map((difficulty) => (
+                    <option key={difficulty} value={difficulty}>
+                      {difficulty}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label for="type" class="form-label">
+                  Type
+                </label>
+                <select
+                  id="type"
+                  name="type"
+                  value={filter.type}
+                  onChange={handleFilterChange}
+                  className="form-select text-capitalize"
+                >
+                  <option value="">Any Type</option>
+                  {types.map((type) => (
+                    <option key={type} value={type}>
+                      {type === "boolean" ? "True/False" : "Multiple Choice"}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div class="text-center mx-auto">
+                <button onClick={handleSubmit} className="btn btn-primary">
+                  Start Quiz
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      ;
-    </div>
+    </>
   );
 }
 

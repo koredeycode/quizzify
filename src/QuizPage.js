@@ -119,7 +119,7 @@ function QuizPage() {
   const renderQuestion = () => {
     if (isLoading) {
       return (
-        <div className="text-center">
+        <div className="text-center mt-4">
           <div className="spinner-border" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
@@ -129,11 +129,12 @@ function QuizPage() {
 
     if (fetchError) {
       return (
-        <div>
-          <div className="alert alert-danger" role="alert">
-            Failed to fetch quiz data. Please try again later.
+        <div className="container mt-4">
+          <div className="alert alert-danger no-radius" role="alert">
+            Failed to fetch quiz data. Please check your internet connection or
+            quiz selection and try again later.
+            <Link to="/">Go home</Link>
           </div>
-          <Link to="/">Go home</Link>
         </div>
       );
     }
@@ -141,13 +142,13 @@ function QuizPage() {
     const question = quizData[currentQuestion];
 
     return (
-      <div>
-        <div class="card">
-          <div class="card-header">
+      <div className="appmain mx-auto">
+        <div className="card no-radius mt-4">
+          <div className="card-header">
             <h2>Question {currentQuestion + 1}</h2>
             <p>{atob(question.question)}</p>
           </div>
-          <div class="card-body">
+          <div className="card-body">
             <ul className="list-group list-unstyled">
               {question.options.map((option, index) => (
                 <li
@@ -171,7 +172,7 @@ function QuizPage() {
               ))}
             </ul>
           </div>
-          <div class="card-footer">{renderNavigationButtons()}</div>
+          <div className="card-footer">{renderNavigationButtons()}</div>
         </div>
       </div>
     );
@@ -180,42 +181,58 @@ function QuizPage() {
   // Render previous and next buttons based on current question index
   const renderNavigationButtons = () => {
     return (
-      <div className="container">
-        <div className="row">
+      <div className="">
+        <div className="d-flex flex-wrap justify-content-center mt-3">
           {currentQuestion > 0 && (
-            <div className="col-3">
+            <div className="m-1">
               <button
                 className="btn btn-secondary"
                 onClick={goToPreviousQuestion}
               >
-                <i class="bi bi-caret-left-fill me-1"></i>Previous
+                <i class="bi bi-caret-left-fill me-1"></i>
+                <span>Previous</span>
               </button>
             </div>
           )}
           {currentQuestion < quizData.length - 1 && (
-            <div className="col-3">
+            <div className="m-1">
               <button className="btn btn-secondary" onClick={goToNextQuestion}>
-                Next<i class="bi bi-caret-right-fill me-1"></i>
+                <span>Next </span>
+                <i class="bi bi-caret-right-fill me-1"></i>
               </button>
             </div>
           )}
           {currentQuestion === quizData.length - 1 && (
-            <div className="col-3">
+            <div className="m-1">
               <button className="btn btn-warning" onClick={handleSubmit}>
-                <i class="bi bi-check-circle-fill me-1"></i>Submit
+                <span>Submit </span>
+                <i class="bi bi-check-circle-fill me-1"></i>
               </button>
             </div>
           )}
         </div>
-        <div class="row" role="group" aria-label="Basic outlined example">
+        <div
+          class="d-flex flex-wrap justify-content-center mt-3"
+          role="group"
+          aria-label="Basic outlined example"
+        >
           {quizData.map((question, index) => {
             return (
-              <div className="col-2">
+              <div className="">
                 <button
-                  className={`btn btn-${btnColors[index]}`}
+                  className={`btn btn-${btnColors[index]} no-radius`}
                   onClick={() => goToSpecificQuestion(index)}
                 >
-                  {index + 1}
+                  {(() => {
+                    const str = String(index + 1);
+                    if (str.length === 1) {
+                      return "0" + str;
+                    } else if (str.length === 2) {
+                      return str;
+                    } else if (str.length > 2) {
+                      return str.slice(0, 2);
+                    }
+                  })()}
                 </button>
               </div>
             );

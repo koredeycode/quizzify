@@ -4,7 +4,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import QuizPage from "./QuizPage";
-import ResultPage from "./ResultPage"
+import ResultPage from "./ResultPage";
 
 function App() {
   return (

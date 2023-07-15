@@ -27,8 +27,8 @@ function ResultPage() {
     const question = data[currentQuestion];
 
     return (
-      <div>
-        <div class="card">
+      <div className="appmain mx-auto">
+        <div class="card no-radius mt-4">
           <div class="card-header">
             <h2>Question {currentQuestion + 1}</h2>
             <p>{atob(question.question)}</p>
@@ -69,44 +69,60 @@ function ResultPage() {
   };
   const renderNavigationButtons = () => {
     return (
-      <div className="container">
-        <div className="row">
+      <div className="">
+        <div className="d-flex flex-wrap justify-content-center mt-3">
           {currentQuestion > 0 && (
-            <div className="col-3">
+            <div className="m-1">
               <button
                 className="btn btn-secondary"
                 onClick={goToPreviousQuestion}
               >
-                <i class="bi bi-caret-left-fill me-1"></i>Previous
+                <i class="bi bi-caret-left-fill me-1"></i>
+                <span>Previous</span>
               </button>
             </div>
           )}
           {currentQuestion < data.length - 1 && (
-            <div className="col-3">
+            <div className="m-1">
               <button className="btn btn-secondary" onClick={goToNextQuestion}>
-                Next<i class="bi bi-caret-right-fill me-1"></i>
+                <span>Next</span>
+                <i class="bi bi-caret-right-fill me-1"></i>
               </button>
             </div>
           )}
           {currentQuestion === data.length - 1 && (
-            <div className="col-3">
+            <div className="m-1">
               <button className="btn btn-warning" onClick={() => {}} disabled>
-                <i class="bi bi-check-circle-fill me-1"></i>Submit
+                <span>Submit </span>
+                <i class="bi bi-check-circle-fill me-1"></i>
               </button>
             </div>
           )}
         </div>
-        <div class="row" role="group" aria-label="Basic outlined example">
+        <div
+          class="d-flex flex-wrap justify-content-center mt-3"
+          role="group"
+          aria-label="Basic outlined example"
+        >
           {data.map((question, index) => {
             return (
-              <div className="col-2">
+              <div className="">
                 <button
                   className={`btn btn-${
                     question.gotten ? "success" : "danger"
-                  }`}
+                  } no-radius`}
                   onClick={() => goToSpecificQuestion(index)}
                 >
-                  {index + 1}
+                  {(() => {
+                    const str = String(index + 1);
+                    if (str.length === 1) {
+                      return "0" + str;
+                    } else if (str.length === 2) {
+                      return str;
+                    } else if (str.length > 2) {
+                      return str.slice(0, 2);
+                    }
+                  })()}
                 </button>
               </div>
             );
@@ -138,9 +154,17 @@ function ResultPage() {
     <div>
       <Navbar />
       {location.state ? (
-        <p>
-          You scored {score} over {overall}
-        </p>
+        <div className="mt-2">
+          <h5 className="text-center">
+            Score: {score}/{overall}
+          </h5>
+          <div className="score-bar">
+            <div
+              className="score-bar-fill"
+              style={{ width: `${(score / overall) * 100}%` }}
+            ></div>
+          </div>
+        </div>
       ) : (
         <p>
           No result Data found Go <Link to="/">Home</Link>
