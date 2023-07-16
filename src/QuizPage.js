@@ -56,12 +56,11 @@ function QuizPage() {
       if (Math.abs(swipeDistance) > 50) {
         if (swipeDistance > 0) {
           // Swipe right
-          goToPreviousQuestion();
-
+          goToNextQuestion();
           console.log("Swiped right");
         } else {
           // Swipe left
-          goToNextQuestion();
+          goToPreviousQuestion();
           console.log("Swiped left");
         }
       }
@@ -135,7 +134,6 @@ function QuizPage() {
   };
 
   const goToPreviousQuestion = () => {
-    console.log("inside prev");
     setCurrentQuestion((prevQuestion) => {
       const newQuestion = prevQuestion - 1;
       return newQuestion >= 0 ? newQuestion : prevQuestion;
@@ -145,7 +143,6 @@ function QuizPage() {
   const goToNextQuestion = () => {
     setCurrentQuestion((prevQuestion) => {
       const newQuestion = prevQuestion + 1;
-      console.log(newQuestion, quizData.length);
       return newQuestion < quizData.length ? newQuestion : prevQuestion;
     });
   };
