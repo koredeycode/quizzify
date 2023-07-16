@@ -9,6 +9,66 @@ function ResultPage() {
   const navigate = useNavigate();
   useEffect(() => {
     const handleKeyDown = (event) => {
+      console.log(event);
+      const optionKeyCodes = [65, 66, 67, 68];
+      if (event.keyCode === 37 || event.keyCode === 80) {
+        // Left arrow key
+        goToPreviousQuestion();
+      } else if (event.keyCode === 39 || event.keyCode === 78) {
+        // Right arrow key
+        goToNextQuestion();
+      } else if (event.keyCode === 83) {
+        document.getElementById("submit-btn").click();
+      } else if (optionKeyCodes.includes(event.keyCode)) {
+        const optionsList = document.getElementById("options-list");
+        const options = optionsList.getElementsByTagName("li");
+        const optionIndex = optionKeyCodes.indexOf(event.keyCode);
+        const option = options[optionIndex];
+        if (option) {
+          option.click();
+        }
+      }
+    };
+
+    // Variables to track touch start and end positions
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    // Add touchstart event listener to track the starting position
+    document.addEventListener("touchstart", (event) => {
+      touchStartX = event.touches[0].clientX;
+    });
+
+    // Add touchend event listener to track the ending position
+    document.addEventListener("touchend", (event) => {
+      touchEndX = event.changedTouches[0].clientX;
+
+      // Calculate the swipe distance
+      const swipeDistance = touchEndX - touchStartX;
+
+      // Check if the swipe distance is greater than a threshold value (e.g., 50 pixels)
+      if (Math.abs(swipeDistance) > 50) {
+        if (swipeDistance > 0) {
+          // Swipe right
+          goToPreviousQuestion();
+
+          console.log("Swiped right");
+        } else {
+          // Swipe left
+          goToNextQuestion();
+          console.log("Swiped left");
+        }
+      }
+    });
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+  useEffect(() => {
+    const handleKeyDown = (event) => {
       if (event.keyCode === 37 || event.keyCode === 80) {
         // Left arrow key
         goToPreviousQuestion();
