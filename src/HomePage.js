@@ -68,16 +68,16 @@ function HomePage() {
   return (
     <>
       <Navbar />
-      <div class="container">
-        <div class="">
-          <div class="text-center">
-            <h2 class="card-title m-3">Welcome to the Quiz App!</h2>
+      <div className="container">
+        <div className="">
+          <div className="text-center">
+            <h2 className="card-title m-3">Welcome to the Quiz App!</h2>
             <p>Test your knowledge with challenging quizzes.</p>
           </div>
           <div className="mx-auto">
-            <div class="row g-3">
-              <div class="col-md-3">
-                <label for="number" class="form-label">
+            <div className="row g-3">
+              <div className="col-md-3">
+                <label for="number" className="form-label">
                   Questions
                 </label>
                 <input
@@ -89,8 +89,8 @@ function HomePage() {
                   onChange={handleFilterChange}
                 />
               </div>
-              <div class="col-md-3">
-                <label for="category" class="form-label">
+              <div className="col-md-3">
+                <label for="category" className="form-label">
                   Category
                 </label>
                 <select
@@ -108,8 +108,8 @@ function HomePage() {
                   ))}
                 </select>
               </div>
-              <div class="col-md-3">
-                <label for="difficulty" class="form-label">
+              <div className="col-md-3">
+                <label for="difficulty" className="form-label">
                   Difficulty
                 </label>
                 <select
@@ -127,8 +127,8 @@ function HomePage() {
                   ))}
                 </select>
               </div>
-              <div class="col-md-3">
-                <label for="type" class="form-label">
+              <div className="col-md-3">
+                <label for="type" className="form-label">
                   Type
                 </label>
                 <select
@@ -146,7 +146,7 @@ function HomePage() {
                   ))}
                 </select>
               </div>
-              <div class="text-center mx-auto">
+              <div className="text-center mx-auto">
                 <button onClick={handleSubmit} className="btn btn-primary">
                   Start Quiz
                 </button>

@@ -12,11 +12,8 @@ function QuizPage() {
   const typeTxt = type ? `&type=${type}` : "";
   const categoryTxt = category ? `&category=${category}` : "";
   const difficultyTxt = difficulty ? `&difficulty=${difficulty}` : "";
+
   useEffect(() => {
-    console.log("separate useeffect");
-  }, []);
-  useEffect(() => {
-    console.log("useeffect");
     const fetchQuizData = async () => {
       const url = `https://opentdb.com/api.php?amount=${
         amount ? amount : 10
@@ -112,6 +109,7 @@ function QuizPage() {
     });
     resultObj["score"] = score;
     resultObj["overall"] = quizData.length;
+    resultObj["quizfilters"] = { amount, type, difficulty, category };
     return resultObj;
   };
 
@@ -189,7 +187,7 @@ function QuizPage() {
                 className="btn btn-secondary"
                 onClick={goToPreviousQuestion}
               >
-                <i class="bi bi-caret-left-fill me-1"></i>
+                <i className="bi bi-caret-left-fill me-1"></i>
                 <span>Previous</span>
               </button>
             </div>
@@ -198,7 +196,7 @@ function QuizPage() {
             <div className="m-1">
               <button className="btn btn-secondary" onClick={goToNextQuestion}>
                 <span>Next </span>
-                <i class="bi bi-caret-right-fill me-1"></i>
+                <i className="bi bi-caret-right-fill me-1"></i>
               </button>
             </div>
           )}
@@ -206,13 +204,13 @@ function QuizPage() {
             <div className="m-1">
               <button className="btn btn-warning" onClick={handleSubmit}>
                 <span>Submit </span>
-                <i class="bi bi-check-circle-fill me-1"></i>
+                <i className="bi bi-check-circle-fill me-1"></i>
               </button>
             </div>
           )}
         </div>
         <div
-          class="d-flex flex-wrap justify-content-center mt-3"
+          className="d-flex flex-wrap justify-content-center mt-3"
           role="group"
           aria-label="Basic outlined example"
         >

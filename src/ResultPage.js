@@ -1,11 +1,12 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 
 function ResultPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const location = useLocation();
-  const { score, overall, data } = location.state || {};
+  const { score, overall, data, quizfilters } = location.state || {};
+  const navigate = useNavigate();
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.keyCode === 37) {
@@ -28,12 +29,12 @@ function ResultPage() {
 
     return (
       <div className="appmain mx-auto">
-        <div class="card no-radius mt-4">
-          <div class="card-header">
+        <div className="card no-radius mt-4">
+          <div className="card-header">
             <h2>Question {currentQuestion + 1}</h2>
             <p>{atob(question.question)}</p>
           </div>
-          <div class="card-body">
+          <div className="card-body">
             <ul className="list-group list-unstyled">
               {question.options.map((option, index) => (
                 <li
@@ -62,7 +63,7 @@ function ResultPage() {
               ))}
             </ul>
           </div>
-          <div class="card-footer">{renderNavigationButtons()}</div>
+          <div className="card-footer">{renderNavigationButtons()}</div>
         </div>
       </div>
     );
@@ -77,7 +78,7 @@ function ResultPage() {
                 className="btn btn-secondary"
                 onClick={goToPreviousQuestion}
               >
-                <i class="bi bi-caret-left-fill me-1"></i>
+                <i className="bi bi-caret-left-fill me-1"></i>
                 <span>Previous</span>
               </button>
             </div>
@@ -86,21 +87,26 @@ function ResultPage() {
             <div className="m-1">
               <button className="btn btn-secondary" onClick={goToNextQuestion}>
                 <span>Next</span>
-                <i class="bi bi-caret-right-fill me-1"></i>
+                <i className="bi bi-caret-right-fill me-1"></i>
               </button>
             </div>
           )}
           {currentQuestion === data.length - 1 && (
             <div className="m-1">
-              <button className="btn btn-warning" onClick={() => {}} disabled>
-                <span>Submit </span>
-                <i class="bi bi-check-circle-fill me-1"></i>
+              <button
+                className="btn btn-warning"
+                onClick={() => {
+                  navigate("/quiz", { state: quizfilters });
+                }}
+              >
+                <span>Redo </span>
+                <i className="bi bi-arrow-clockwise me-1"></i>
               </button>
             </div>
           )}
         </div>
         <div
-          class="d-flex flex-wrap justify-content-center mt-3"
+          className="d-flex flex-wrap justify-content-center mt-3"
           role="group"
           aria-label="Basic outlined example"
         >
