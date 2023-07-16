@@ -14,6 +14,36 @@ function QuizPage() {
   const difficultyTxt = difficulty ? `&difficulty=${difficulty}` : "";
 
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      console.log(event);
+      const optionKeyCodes = [65, 66, 67, 68];
+      if (event.keyCode === 37 || event.keyCode === 80) {
+        // Left arrow key
+        goToPreviousQuestion();
+      } else if (event.keyCode === 39 || event.keyCode === 78) {
+        // Right arrow key
+        goToNextQuestion();
+      } else if (event.keyCode === 83) {
+        document.getElementById("submit-btn").click();
+      } else if (optionKeyCodes.includes(event.keyCode)) {
+        const optionsList = document.getElementById("options-list");
+        const options = optionsList.getElementsByTagName("li");
+        const optionIndex = optionKeyCodes.indexOf(event.keyCode);
+        const option = options[optionIndex];
+        if (option) {
+          option.click();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchQuizData = async () => {
       const url = `https://opentdb.com/api.php?amount=${
         amount ? amount : 10
@@ -142,12 +172,27 @@ function QuizPage() {
     return (
       <div className="appmain mx-auto">
         <div className="card no-radius mt-4">
-          <div className="card-header">
-            <h2>Question {currentQuestion + 1}</h2>
-            <p>{atob(question.question)}</p>
+          <div className="card-header d-flex justify-content-between">
+            <div className="col-8">
+              <h2>Question {currentQuestion + 1}</h2>
+              <p>{atob(question.question)}</p>
+            </div>
+            <div className="col-4 m-1 d-flex justify-content-end">
+              <div>
+                <button
+                  id="submit-btn"
+                  className="btn btn-warning"
+                  onClick={handleSubmit}
+                  disabled={userAnswers.length < quizData.length}
+                >
+                  <span>Submit </span>
+                  <i className="bi bi-check-circle-fill me-1"></i>
+                </button>
+              </div>
+            </div>
           </div>
           <div className="card-body">
-            <ul className="list-group list-unstyled">
+            <ul className="list-group list-unstyled" id="options-list">
               {question.options.map((option, index) => (
                 <li
                   key={index}
@@ -200,14 +245,6 @@ function QuizPage() {
               </button>
             </div>
           )}
-          {currentQuestion === quizData.length - 1 && (
-            <div className="m-1">
-              <button className="btn btn-warning" onClick={handleSubmit}>
-                <span>Submit </span>
-                <i className="bi bi-check-circle-fill me-1"></i>
-              </button>
-            </div>
-          )}
         </div>
         <div
           className="d-flex flex-wrap justify-content-center mt-3"
@@ -246,24 +283,6 @@ function QuizPage() {
     navigate("/result", { state: scoreData });
     // You can perform other actions with the score, like storing it in a database
   };
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.keyCode === 37) {
-        // Left arrow key
-        goToPreviousQuestion();
-      } else if (event.keyCode === 39) {
-        // Right arrow key
-        goToNextQuestion();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   return (
     <div>

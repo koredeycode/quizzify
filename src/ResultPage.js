@@ -9,10 +9,10 @@ function ResultPage() {
   const navigate = useNavigate();
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.keyCode === 37) {
+      if (event.keyCode === 37 || event.keyCode === 80) {
         // Left arrow key
         goToPreviousQuestion();
-      } else if (event.keyCode === 39) {
+      } else if (event.keyCode === 39 || event.keyCode === 78) {
         // Right arrow key
         goToNextQuestion();
       }
@@ -30,9 +30,24 @@ function ResultPage() {
     return (
       <div className="appmain mx-auto">
         <div className="card no-radius mt-4">
-          <div className="card-header">
-            <h2>Question {currentQuestion + 1}</h2>
-            <p>{atob(question.question)}</p>
+          <div className="card-header d-flex justify-content-between">
+            <div className="col-8">
+              <h2>Question {currentQuestion + 1}</h2>
+              <p>{atob(question.question)}</p>
+            </div>
+            <div className="col-4 m-1 d-flex justify-content-end">
+              <div>
+                <button
+                  className="btn btn-warning"
+                  onClick={() => {
+                    navigate("/quiz", { state: quizfilters });
+                  }}
+                >
+                  <span>Redo </span>
+                  <i className="bi bi-arrow-clockwise me-1"></i>
+                </button>
+              </div>
+            </div>
           </div>
           <div className="card-body">
             <ul className="list-group list-unstyled">
@@ -88,19 +103,6 @@ function ResultPage() {
               <button className="btn btn-secondary" onClick={goToNextQuestion}>
                 <span>Next</span>
                 <i className="bi bi-caret-right-fill me-1"></i>
-              </button>
-            </div>
-          )}
-          {currentQuestion === data.length - 1 && (
-            <div className="m-1">
-              <button
-                className="btn btn-warning"
-                onClick={() => {
-                  navigate("/quiz", { state: quizfilters });
-                }}
-              >
-                <span>Redo </span>
-                <i className="bi bi-arrow-clockwise me-1"></i>
               </button>
             </div>
           )}
