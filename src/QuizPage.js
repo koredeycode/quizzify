@@ -56,11 +56,12 @@ function QuizPage() {
       if (Math.abs(swipeDistance) > 50) {
         if (swipeDistance > 0) {
           // Swipe right
-          goToNextQuestion();
+          goToPreviousQuestion();
           console.log("Swiped right");
         } else {
           // Swipe left
-          goToPreviousQuestion();
+
+          goToNextQuestion();
           console.log("Swiped left");
         }
       }
