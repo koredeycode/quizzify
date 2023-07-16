@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import Navbar from "./Navbar";
 
+let lengthOfQuestions;
 function QuizPage() {
   const [quizData, setQuizData] = useState([]);
   const [btnColors, setBtnColors] = useState({});
@@ -15,7 +16,6 @@ function QuizPage() {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      console.log(event);
       const optionKeyCodes = [65, 66, 67, 68];
       if (event.keyCode === 37 || event.keyCode === 80) {
         // Left arrow key
@@ -57,12 +57,9 @@ function QuizPage() {
         if (swipeDistance > 0) {
           // Swipe right
           goToPreviousQuestion();
-          console.log("Swiped right");
         } else {
           // Swipe left
-
           goToNextQuestion();
-          console.log("Swiped left");
         }
       }
     });
@@ -76,10 +73,10 @@ function QuizPage() {
 
   useEffect(() => {
     const fetchQuizData = async () => {
-      const url = `https://opentdb.com/api.php?amount=${
-        amount ? amount : 10
-      }${categoryTxt}${typeTxt}${difficultyTxt}&encode=base64`;
-      // const url = `http://localhost:3000/data`;
+      // const url = `https://opentdb.com/api.php?amount=${
+      //   amount ? amount : 10
+      // }${categoryTxt}${typeTxt}${difficultyTxt}&encode=base64`;
+      const url = `http://localhost:3000/data`;
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -99,6 +96,7 @@ function QuizPage() {
         if (realData.length < 1) {
           throw new Error("No questions found");
         }
+        lengthOfQuestions = realData.length;
         setQuizData(realData);
         setIsLoading(false);
         setBtnColors(
@@ -144,7 +142,7 @@ function QuizPage() {
   const goToNextQuestion = () => {
     setCurrentQuestion((prevQuestion) => {
       const newQuestion = prevQuestion + 1;
-      return newQuestion < quizData.length ? newQuestion : prevQuestion;
+      return newQuestion < lengthOfQuestions ? newQuestion : prevQuestion;
     });
   };
 
