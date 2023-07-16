@@ -36,6 +36,36 @@ function QuizPage() {
       }
     };
 
+    // Variables to track touch start and end positions
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    // Add touchstart event listener to track the starting position
+    document.addEventListener("touchstart", (event) => {
+      touchStartX = event.touches[0].clientX;
+    });
+
+    // Add touchend event listener to track the ending position
+    document.addEventListener("touchend", (event) => {
+      touchEndX = event.changedTouches[0].clientX;
+
+      // Calculate the swipe distance
+      const swipeDistance = touchEndX - touchStartX;
+
+      // Check if the swipe distance is greater than a threshold value (e.g., 50 pixels)
+      if (Math.abs(swipeDistance) > 50) {
+        if (swipeDistance > 0) {
+          // Swipe right
+          goToNextQuestion();
+          console.log("Swiped right");
+        } else {
+          // Swipe left
+          goToPreviousQuestion();
+          console.log("Swiped left");
+        }
+      }
+    });
+
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
