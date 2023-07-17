@@ -201,12 +201,11 @@ function QuizPage() {
     return (
       <div className="appmain mx-auto">
         <div className="card no-radius mt-4">
-          <div className="card-header d-flex justify-content-between">
-            <div className="col-8">
-              <h2>Question {currentQuestion + 1}</h2>
-              <p>{atob(question.question)}</p>
-            </div>
-            <div className="col-4 m-1 d-flex justify-content-end">
+          <div className="card-header">
+            <div className="d-flex justify-content-between">
+              <div>
+                <h2>Question {currentQuestion + 1}</h2>
+              </div>
               <div>
                 <button
                   id="submit-btn"
@@ -217,6 +216,11 @@ function QuizPage() {
                   <span>Submit </span>
                   <i className="bi bi-check-circle-fill me-1"></i>
                 </button>
+              </div>
+            </div>
+            <div className="">
+              <div>
+                <p>{atob(question.question)}</p>
               </div>
             </div>
           </div>
