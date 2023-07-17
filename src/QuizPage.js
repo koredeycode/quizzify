@@ -74,9 +74,9 @@ function QuizPage() {
   useEffect(() => {
     const fetchQuizData = async () => {
       const url = `https://opentdb.com/api.php?amount=${
-         amount ? amount : 10
-       }${categoryTxt}${typeTxt}${difficultyTxt}&encode=base64`;
-       const url = `http://localhost:3000/data`;
+        amount ? amount : 10
+      }${categoryTxt}${typeTxt}${difficultyTxt}&encode=base64`;
+      //  const url = `http://localhost:3000/data`;
       try {
         const response = await fetch(url);
         if (!response.ok) {
