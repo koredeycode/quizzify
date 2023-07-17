@@ -6,6 +6,7 @@ function ResultPage() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const location = useLocation();
   const { score, overall, data, quizfilters } = location.state || {};
+  console.log("location state", location.state);
   const navigate = useNavigate();
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -207,23 +208,25 @@ function ResultPage() {
     <div>
       <Navbar />
       {location.state ? (
-        <div className="mt-2">
-          <h5 className="text-center">
-            Score: {score}/{overall}
-          </h5>
-          <div className="score-bar">
-            <div
-              className="score-bar-fill"
-              style={{ width: `${(score / overall) * 100}%` }}
-            ></div>
+        <>
+          <div className="mt-2">
+            <h5 className="text-center">
+              Score: {score}/{overall}
+            </h5>
+            <div className="score-bar">
+              <div
+                className="score-bar-fill"
+                style={{ width: `${(score / overall) * 100}%` }}
+              ></div>
+            </div>
           </div>
-        </div>
+          {renderQuestion()}
+        </>
       ) : (
         <p>
           No result Data found Go <Link to="/">Home</Link>
         </p>
       )}
-      {renderQuestion()}
     </div>
   );
 }
