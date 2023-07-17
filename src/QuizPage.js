@@ -209,9 +209,8 @@ function QuizPage() {
               <div>
                 <button
                   id="submit-btn"
-                  className="btn btn-warning"
+                  className="btn btn-warning btn-sm"
                   onClick={handleSubmit}
-                  disabled={userAnswers.length < quizData.length}
                 >
                   <span>Submit </span>
                   <i className="bi bi-check-circle-fill me-1"></i>

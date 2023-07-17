@@ -9,24 +9,12 @@ function ResultPage() {
   const navigate = useNavigate();
   useEffect(() => {
     const handleKeyDown = (event) => {
-      console.log(event);
-      const optionKeyCodes = [65, 66, 67, 68];
       if (event.keyCode === 37 || event.keyCode === 80) {
         // Left arrow key
         goToPreviousQuestion();
       } else if (event.keyCode === 39 || event.keyCode === 78) {
         // Right arrow key
         goToNextQuestion();
-      } else if (event.keyCode === 83) {
-        document.getElementById("submit-btn").click();
-      } else if (optionKeyCodes.includes(event.keyCode)) {
-        const optionsList = document.getElementById("options-list");
-        const options = optionsList.getElementsByTagName("li");
-        const optionIndex = optionKeyCodes.indexOf(event.keyCode);
-        const option = options[optionIndex];
-        if (option) {
-          option.click();
-        }
       }
     };
 
@@ -51,12 +39,9 @@ function ResultPage() {
         if (swipeDistance > 0) {
           // Swipe right
           goToPreviousQuestion();
-
-          console.log("Swiped right");
         } else {
           // Swipe left
           goToNextQuestion();
-          console.log("Swiped left");
         }
       }
     });
@@ -98,7 +83,7 @@ function ResultPage() {
             <div className="col-4 m-1 d-flex justify-content-end">
               <div>
                 <button
-                  className="btn btn-warning"
+                  className="btn btn-warning btn-sm"
                   onClick={() => {
                     navigate("/quiz", { state: quizfilters });
                   }}
